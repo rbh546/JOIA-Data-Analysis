@@ -1,8 +1,8 @@
 function foundHPZs_data = findHPZs( X,Y,press,handles )
 %FINDHPZS retrieve HPZ and stats in frames. Works with JOIATOOL.
 % 
-%   Martin Richard
-%   C-CORE, St. John's, NL CANADA
+%   Ridwan Hossain
+%   Memorial University, St. John's, NL CANADA
 
 
 
