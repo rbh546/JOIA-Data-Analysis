@@ -1,4 +1,4 @@
-function varargout = JOIAtool_mine(varargin)
+function varargout = JOIAtool_2019(varargin)
 %JOIATOOL is a GUI tool to analyze JOIA data.
 %   JOIATOOL opens the GUI tool to analyze available JOIA data 
 % 
