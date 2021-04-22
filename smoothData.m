@@ -13,10 +13,9 @@ function smoothedData = smoothData( data,windowSize )
 %   EXAMPLE:
 %   smoothedData = smoothData( data,10 );
 % 
-%   Martin Richard
-%   C-CORE, St. John's, NL CANADA
+%   Ridwan Hossain
+%   Memorial University, St. John's, NL CANADA
 
-%   Copyright 2011-2012 C-CORE
 
 window = ones(windowSize,1)/windowSize; 
 smoothedData = nan(size(data));
