@@ -8,4 +8,4 @@ The repository contains the scripts for the GUI tool for data visualization and 
 Here is a demo of the tool:
 
 1. Run script generates this GUI
-2. ![alt text](https://github.com/rbh546/JOIA-Data-Analysis/blob/main/sc1.jpg?raw=true)
+2. ![alt text](https://github.com/rbh546/JOIA-Data-Analysis/blob/main/sc1.JPG?raw=true)
