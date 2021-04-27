@@ -7,5 +7,7 @@ The repository contains the scripts for the GUI tool for data visualization and 
 
 Here is a demo of the tool:
 
-1. Run script generates the [GUI](https://github.com/rbh546/JOIA-Data-Analysis/blob/main/sc1.JPG?raw=true)
-2. Data for the selected test can be loaded using Load Button [alt text](https://github.com/rbh546/JOIA-Data-Analysis/blob/main/sc2.JPG?raw=true)
+1. Running script generates the GUI ![](images/sc1.JPG)
+2. Data for the selected test can be loaded using Load Button ![](images/sc2.jpg)
+3. Loading complete ![](images/sc3.JPG)
+4. Running visualization upon pressing the Start Button ![](imaages/sc7.png)
