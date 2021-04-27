@@ -10,4 +10,4 @@ Here is a demo of the tool:
 1. Running script generates the GUI ![](images/sc1.JPG)
 2. Data for the selected test can be loaded using Load Button ![](images/sc2.jpg)
 3. Loading complete ![](images/sc3.JPG)
-4. Running visualization upon pressing the Start Button ![](imaages/sc7.png)
+4. Running visualization upon pressing the Start Button ![](images/sc7.png)
