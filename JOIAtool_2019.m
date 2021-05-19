@@ -247,7 +247,7 @@ calculations.maxY = maxY;
 Data.calculations = calculations;
 % -- End of calculation
 
-%% ShowAx1 - Plots Tactile Data on Ax1
+%% ShowAx1 - Plots Tactile pressure sensor data on Ax1
 function [Data, handles] = ShowAx1(Data,handles)
 % --
 minX = Data.calculations.minX;
