@@ -27,4 +27,4 @@ Here is a demo of the application:
 
 ![](images/sc7.png)
 
-The details for JOIA tests can be found here (Sodhi, D. S., Takeuchi, T., Nakazawa, N., Akagawa, S., and Saeki, H., 1998, “Medium-Scale Indentation Tests on Sea Ice at Various Speeds,” Cold Reg. Sci. Technol., 28(3), pp. 161–182 DOI: 10.1016/S0165-232X(98)00017-2.)
+The details for JOIA tests can be found here (Sodhi, D. S., Takeuchi, T., Nakazawa, N., Akagawa, S., and Saeki, H., 1998, “Medium-Scale Indentation Tests on Sea Ice at Various Speeds,” Cold Reg. Sci. Technol., 28(3), pp. 161–182 https://doi.org/10.1016/S0165-232X(98)00017-2)
