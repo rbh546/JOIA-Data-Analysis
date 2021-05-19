@@ -107,7 +107,7 @@ handles.options.isFirstClick = 1;
 % --
 
 % load data
-Data = readJOIAdata( [handles.options.MainFolder,filesep,currentFolder] );
+Data = read_JOIAdata( [handles.options.MainFolder,filesep,currentFolder] );
     avgWindowSize = str2double(get(handles.avgWindowSize,'String'));
     if isnan(avgWindowSize) || isempty(avgWindowSize), avgWindowSize = 10; end
 Data = performCalculations( Data , avgWindowSize );
@@ -162,12 +162,12 @@ SetObjOnOff(handles,'on','initial/load')
 %% Perform Calculations
 function Data = performCalculations( Data,avgWindowSize )
 % -- calculate forces, pressures and areas, based on tactile data to ensure matches the ASG file provided
-[TactileCalculatedForce, area, press, ForcesPerSensor, AreasPerSensor, PressPerSensor] = doCalculations(Data);
+[TactileCalculatedForce, area, press, ForcesPerSensor, AreasPerSensor, PressPerSensor] = do_Calculations(Data);
 % -- calculate global pressures from data in ASG files
 Press_ASG = (Data.TactileSensor.ASGfile.force.Force./1000) ./ (Data.TactileSensor.ASGfile.area.Area*1e-6); % converted from mm^2 to m^2 to get kPa, then /1000 to get MPa
 % -- apply a smoothing avg. filter on the global pressures and areas calculated based on ASF file (movie file)
-press_smooth = smoothData( press,avgWindowSize );
-area_smooth  = smoothData( area,avgWindowSize );
+press_smooth = smooth_Data( press,avgWindowSize );
+area_smooth  = smooth_Data( area,avgWindowSize );
 % -- calculate back a smoothed version of force
 TactileCalculatedForce_smooth = press_smooth.*area_smooth*1000;
 % -- calculate the slope of pressure curve
@@ -185,9 +185,9 @@ if abs(maxV-Data.TactileSensor.ASFfile.SATURATION_PRESSURE)<0.01, satPressFlag =
 % --
 TotalAreaAllPanels = Data.TactileSensor.ASFfile.ROWS * Data.TactileSensor.ASFfile.ROW_SPACING * Data.TactileSensor.ASFfile.COLS * Data.TactileSensor.ASFfile.COL_SPACING *1e-6; % convert from mm^2 to m^2;
 % -- smooth data by sensor
-PressPerSensor_smooth = smoothData( PressPerSensor,avgWindowSize );
-ForcesPerSensor_smooth = smoothData( ForcesPerSensor,avgWindowSize );
-AreasPerSensor_smooth = smoothData( AreasPerSensor,avgWindowSize );
+PressPerSensor_smooth = smooth_Data( PressPerSensor,avgWindowSize );
+ForcesPerSensor_smooth = smooth_Data( ForcesPerSensor,avgWindowSize );
+AreasPerSensor_smooth = smooth_Data( AreasPerSensor,avgWindowSize );
 % --
 % look how many cells and fit to screen
 [m n] = size(Data.TactileSensor.ASFfile.Pressures(:,:,1));
@@ -696,7 +696,7 @@ while 1
         % --  show contours of HPZs
         if DoAx10Flag
             axes(handles.ax10) %#ok<LAXES>
-            foundHPZs_data = findHPZs( Data.calculations.X,Data.calculations.Y,currentData,handles );
+            foundHPZs_data = find_HPZs( Data.calculations.X,Data.calculations.Y,currentData,handles );
             peaks       = foundHPZs_data.peaks;
             c_contour	= foundHPZs_data.c_contour;
             ZLIM = get( handles.ax10 , 'ZLim' );
@@ -1016,7 +1016,7 @@ for i = iLim(1):iLim(2)
     % --
     waitbar( (i-iLim(1))/numFrames2do )
     % -- data from each frame
-    foundHPZs_data = findHPZs( X,Y,Pressures(:,:,i),handles );
+    foundHPZs_data = find_HPZs( X,Y,Pressures(:,:,i),handles );
     if i==iLim(1)
         % initialize the output structure dynamically with all the content of foundHPZs_data
         FieldNames = fieldnames(foundHPZs_data);
