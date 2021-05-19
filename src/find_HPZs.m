@@ -1,4 +1,4 @@
-function foundHPZs_data = findHPZs( X,Y,press,handles )
+function foundHPZs_data = find_HPZs( X,Y,press,handles )
 %FINDHPZS retrieve HPZ and stats in frames. Works with JOIATOOL.
 % 
 %   Ridwan Hossain
