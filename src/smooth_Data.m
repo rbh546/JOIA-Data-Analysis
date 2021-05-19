@@ -1,4 +1,4 @@
-function smoothedData = smoothData( data,windowSize )
+function smoothedData = smooth_Data( data,windowSize )
 %SMOOTHDATA simple smoothing function (moving avg.).
 %   SMOOTHEDDATA = SMOOTHDATA( DATA,WINDOWSIZE ) smooths DATA with
 %   corresponding WINDOWSIZE and outputs the smoothed data SMOOTHEDDATA.
