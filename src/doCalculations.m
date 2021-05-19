@@ -16,9 +16,7 @@ function [globalForces contactAreas globalPressures ForcesPerSensor AreasPerSens
 %   AreasPerSensor:  Contact areas  (in m^2) computed from tactile data, for each sensor (from left to right).
 %   PressPerSensor:  Pressures (in MPa) computed from tactile data, for each sensor (from left to right).
 % 
-%   EXAMPLE:
-%   Data = readJOIAdata( 'C:\Documents and Settings\mrichard\My Documents\270851-Mod. HPZs\JOIA\Data\Data_1998\980122-2' );
-%   [globalForces contactAreas PressPerSensor ForcesPerSensor AreasPerSensor] = doCalculations(Data)
+
 % 
 % 
 %   Martin Richard
