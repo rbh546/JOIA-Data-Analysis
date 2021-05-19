@@ -1,4 +1,4 @@
-function Data = readJOIAdata(Folder)
+function Data = read_JOIAdata(Folder)
 %READJOIADATA Reads JOIA data.
 %   DATA = READJOIADATA('C:\theFolder') reads JOIA data available in 
 %   'C:\theFolder' and returns it in the structure named DATA
