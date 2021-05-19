@@ -1,7 +1,7 @@
 # JOIA-Data-Analysis
 The repository contains the code for JOIA data analysis and visualization
 
-The repository contains the scripts for the GUI tool for data visualization and saving high-pressure zones as time-series based on threshold defined by the user. Some of the functions were borrowed from work of Martin Richard, NRC, Canada. The data files are too large to upload in GitHub. Feel free to reach out to me if you are interested about this work.
+The repository contains the scripts for the GUI tool for data visualization and saving high-pressure zones as time-series based on threshold defined by the user. Some of the functions were borrowed from work of Martin Richard, NRC, Canada. The data files are too large to upload in GitHub. Feel free to reach out to me if you are interested about this work. Sample data file is given in the sampleData folder. 
 
 ## Running the code
 The tool can be run by running the JOIAtool_2019.m script in the src folder. Upon running the script MATLAB opens the JOIAtool_2019.fig. The user then can select the source of the data from the list of folders. The user can also provide inputs for the threshold value for HPZ calculation and enable additional visualization by clicking the checkboxes. Once the data is loaded, the user can start the data visualization by pressing START button. The HPZ data can be saved by pressing the SAVE HPZ button once the visualization is completed.
