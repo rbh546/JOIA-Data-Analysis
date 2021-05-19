@@ -110,7 +110,7 @@ handles.options.isFirstClick = 1;
 Data = read_JOIAdata( [handles.options.MainFolder,filesep,currentFolder] );
     avgWindowSize = str2double(get(handles.avgWindowSize,'String'));
     if isnan(avgWindowSize) || isempty(avgWindowSize), avgWindowSize = 10; end
-Data = performCalculations( Data , avgWindowSize );
+Data = perform_Calculations( Data , avgWindowSize );
 set(handles.numFramesStatic,'String',[get(handles.numFramesStatic,'UserData'),num2str(numel(Data.calculations.timeVec))]);
 % --
 % set folder name
@@ -160,7 +160,7 @@ SetObjOnOff(handles,'on','initial/load')
 % -- End loading data
  
 %% Perform Calculations
-function Data = performCalculations( Data,avgWindowSize )
+function Data = perform_Calculations( Data,avgWindowSize )
 % -- calculate forces, pressures and areas, based on tactile data to ensure matches the ASG file provided
 [TactileCalculatedForce, area, press, ForcesPerSensor, AreasPerSensor, PressPerSensor] = do_Calculations(Data);
 % -- calculate global pressures from data in ASG files
