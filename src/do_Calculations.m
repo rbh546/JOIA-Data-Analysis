@@ -1,4 +1,4 @@
-function [globalForces contactAreas globalPressures ForcesPerSensor AreasPerSensor PressPerSensor] = doCalculations(Data)
+function [globalForces contactAreas globalPressures ForcesPerSensor AreasPerSensor PressPerSensor] = do_Calculations(Data)
 %DOCALCULATIONS Calculates global forces based on tactile data from JOIA data.
 %   [GLOBALFORCES CONTACTAREAS PRESSPERSENSOR FORCESPERSENSOR AREASPERSENSOR] = ...
 %   DOCALCULATIONS( DATA ) Calculates forces, pressures and contact areas, 
