@@ -82,19 +82,6 @@ function ListFolders_CreateFcn(hObject, eventdata, handles)
 handles = guihandles(hObject);
 % --
 handles.options.MainFolder = [cd,'\JOIA\Data\Data_1998'];
-% list = dir(handles.options.MainFolder);
-% eraseflags = false(numel(list),1);
-% eraseflags(1:2) = true;
-% Listing = cell(numel(list),1);
-% for i=3:numel(list)
-%     Listing{i} = list(i).name;
-%     if numel(list(i).name)>=10 && ( strcmpi(list(i).name(end-9:end),'_NoTactile') || strcmpi(list(i).name(end-9:end),'Excel_Data') )
-%         eraseflags(i) = true;
-%     end
-% end
-% Listing(eraseflags) = [];
-% set(handles.ListFolders,'String',Listing)
-% --
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
@@ -105,6 +92,7 @@ guidata(hObject,handles);
 %% --- Executes on button press in exit.
 function exit_Callback(hObject, eventdata, handles) %#ok<*INUSL>
 MainFig_CloseRequestFcn(handles.MainFig,eventdata,guidata(handles.MainFig))
+% --
 
 %% --- Executes on button press in Load.
 function Load_Callback(hObject, eventdata, handles)
@@ -117,6 +105,7 @@ end
 handles.options.currentFolder = currentFolder;
 handles.options.isFirstClick = 1;
 % --
+
 % load data
 Data = readJOIAdata( [handles.options.MainFolder,filesep,currentFolder] );
     avgWindowSize = str2double(get(handles.avgWindowSize,'String'));
@@ -168,7 +157,7 @@ if iEdit>1
 end
 % -- Set objs. on/off when a file is loaded
 SetObjOnOff(handles,'on','initial/load')
-% --
+% -- End loading data
  
 %% Perform Calculations
 function Data = performCalculations( Data,avgWindowSize )
@@ -256,9 +245,9 @@ calculations.minY = minY;
 calculations.maxY = maxY;
 % --
 Data.calculations = calculations;
-% --
+% -- End of calculation
 
-%% ShowAx1 - Tactile Data
+%% ShowAx1 - Plots Tactile Data on Ax1
 function [Data, handles] = ShowAx1(Data,handles)
 % --
 minX = Data.calculations.minX;
@@ -335,11 +324,6 @@ xlabel( ['Horizontal Distance (',Data.TactileSensor.ASFfile.COL_SPACING_units,')
 ylabel( ['Vertical Distance (',Data.TactileSensor.ASFfile.ROW_SPACING_units,')'] )
 % --
 satPress = [];
-% if satPressFlag
-%     CbarPos = get(hCbar1,'Position');
-%     satPress = annotation('textbox',[CbarPos(1)+0.9*CbarPos(3) CbarPos(2)+0.95*CbarPos(4) 0.07 0.02],'String','SAT. PRESS.','VerticalAlignment','bottom','EdgeColor','none','FontSize',7);
-% end
-% --
 hold(handles.ax1,'off');
 % -- freeze colormap
 freezeColors(handles.ax1); % freeze colormap
@@ -352,9 +336,9 @@ plotHandles.satPress = satPress;
 plotHandles.panelPosHdl = panelPosHdl;
 % --
 Data.plotHandles = plotHandles;
-% --
+% -- End of function for Ax1
     
-%% ShowAx2 - Forces
+%% ShowAx2 - Plots Forces on Ax2
 function [Data, handles] = ShowAx2(Data,handles)
 % --
 plotSmoothFlag = get(handles.useSmoothData,'Value');
@@ -416,9 +400,9 @@ plotHandles.hL2 = hL2;
 plotHandles.origPosAx2 = get(handles.ax2,'Position');
 % --
 Data.plotHandles = plotHandles;
-% --
+% -- End of function for Ax2
 
-%% ShowAx3 - Areas
+%% ShowAx3 - Plot Areas on Ax3
 function [Data, handles] = ShowAx3(Data,handles)
 % --
 plotSmoothFlag = get(handles.useSmoothData,'Value');
@@ -469,13 +453,7 @@ hLjoia22 = plot( timeVec , finalDataArea ,'-k','LineWidth',2 );
 ax3YLim = get(handles.ax3,'YLim'); set(handles.ax3,'YLim',ax3YLim);
 hL3 = plot( [timeVec(1) timeVec(1)],ax3YLim , 'r-','LineWidth',2 );
 set(hL3,'Tag','hL3');
-% --
-% ax3R = axes('Position',get(handles.ax3,'Position'),'Color','none','XTick',get(handles.ax3,'XTick'),'XTickLabel','','YAxisLocation','right','XColor','k','YColor','k','Tag','ax3R');
-% ax3YTicks = get(handles.ax3,'YTick');  ax3RYTicks = ax3YTicks/TotalAreaAllPanels;
-% tempLab(1,:) = '0   '; for iLab=2:numel(ax3YTicks), tempLab(iLab,:) = num2str( ax3RYTicks(iLab) ,'%0.2f' ); end
-% set(ax3R,'YTick',ax3RYTicks,'YLim',[0 max(ax3RYTicks)],'YTickLabel',tempLab);
-% ylabel(ax3R,'A(time) / A_t_o_t_a_l')
-% --
+
 hold(handles.ax3,'off');
 % -- KEEP all in Data
 plotHandles = Data.plotHandles;
@@ -489,9 +467,9 @@ plotHandles.hL3 = hL3;
 plotHandles.origPosAx3 = get(handles.ax3,'Position');
 % --
 Data.plotHandles = plotHandles;
-% --
+% -- End of function for Ax3
 
-%% ShowAx4 - Pressures
+%% ShowAx4 - Plots Pressures on Ax4
 function [Data, handles] = ShowAx4(Data,handles)
 % --
 plotSmoothFlag = get(handles.useSmoothData,'Value');
@@ -531,7 +509,6 @@ for iSens = 1:4
     hLsensor(iSens,3) = plot( timeVec , finalData(:,iSens) ,'-','Color',colorOrder(iSens,:),'LineWidth',1 ,'Tag','hLsensor3','Visible','off');
 end
 % --
-% uicontrol(handles.MainFig,'Style','text','Units','Normalized','Position', [0.4 0.01 0.2 0.018],'HorizontalAlignment','center','String',['Time (sec.)'],'BackgroundColor','w','FontName','Helvetica','FontSize',10);
 ylabel( ['Mean Contact Pressure (MPa)'] )
 set( handles.ax4,'XLim',[0 ceil(max(timeVec))] )
 % -- calculate global pressures based on tactile data to ensure matches the ASG file provided
@@ -556,9 +533,9 @@ plotHandles.hL4 = hL4;
 plotHandles.origPosAx4 = get(handles.ax4,'Position');
 % --
 Data.plotHandles = plotHandles;
-% --
+% -- End of function for Ax4
 
-%% ShowAx5 - pressure-area cloud
+%% ShowAx5 - Plots pressure-area cloud on Ax5
 function [Data, handles] = ShowAx5(Data,handles)
 % --
 plotSmoothFlag = get(handles.useSmoothData,'Value');
@@ -617,209 +594,7 @@ plotHandles.hL5_trace = hL5_trace;
 Data.plotHandles = plotHandles;
 % --
 
-%% ShowAx6 - d(pressure)/d(time)-area cloud
-% function [Data, handles] = ShowAx6(Data,handles)
-% % --
-% plotSmoothFlag = get(handles.useSmoothData,'Value');
-% area = Data.calculations.area;
-% diff_press = Data.calculations.diff_press;
-% area_smooth = Data.calculations.area_smooth;
-% diff_press_smooth = Data.calculations.diff_press_smooth;
-% grayShade2use = handles.options.grayShade2use;
-% % --
-% axes( handles.ax6 ); %#ok<*MAXES>
-% hold(handles.ax6,'on'); grid on;
-% set(handles.ax6,'YLimMode','auto');
-% % --
-% 
-% % --
-% if ~handles.options.isFirstLoad
-%     % if not first load of the session, do not recreate plot objects on top 
-%     % of existing ones - erase old ones first
-%     delete(handles.currentData.plotHandles.hL6)
-%     delete(handles.currentData.plotHandles.hL62)
-%     delete(handles.currentData.plotHandles.hL63)
-%     delete(handles.currentData.plotHandles.hL6zoom)
-%     delete(handles.currentData.plotHandles.hL6_trace)
-% end
-% % --
-% 
-% % --
-% if plotSmoothFlag, finalData_diff_press = [area_smooth,diff_press_smooth]; else finalData_diff_press = [area,diff_press]; end
-% hL63 = [];
-% if plotSmoothFlag
-%     hL63 = plot( area,diff_press ,'o','MarkerEdgeColor',grayShade2use,'MarkerFaceColor',grayShade2use,'MarkerSize',2 );
-% end
-% hL62 = plot( finalData_diff_press(:,1),finalData_diff_press(:,2) ,'o','MarkerEdgeColor',[0.4 0.4 0.4],'MarkerFaceColor',[0.6 0.6 0.6],'MarkerSize',3 );
-% hL6zoom = plot( nan,nan ,'ok','MarkerEdgeColor',[0.101960784313725  0.250980392156863  0.4],'MarkerSize',4 ); set(hL6zoom,'Tag','hL6zoom','UserData',{finalData_diff_press(:,1),finalData_diff_press(:,2)});
-% % --
-% xlabel( ['Contact Area (m^2)'] )
-% ylabel( ['\partialP/\partialt (MPa/s)'] )
-% XLim = get(handles.ax3,'YLim');
-% set(handles.ax6,'XLim',XLim);
-% % --
-% hL6 = plot( finalData_diff_press(1,1),finalData_diff_press(1,2) ,'or','MarkerFaceColor','r','MarkerSize',4 );
-% set(hL6,'Tag','hL6');
-% hL6_trace = plot( nan,nan,'-','LineWidth',1,'Color',[177 14 14]/255);
-% set(hL6_trace,'Tag','hL6_trace');
-% % --
-% hold(handles.ax6,'off');
-% % -- KEEP all in Data
-% plotHandles = Data.plotHandles;
-% % --
-% plotHandles.hL6 = hL6;
-% plotHandles.hL62 = hL62;
-% plotHandles.hL63 = hL63;
-% plotHandles.hL6zoom = hL6zoom;
-% plotHandles.hL6_trace = hL6_trace;
-% % --
-% Data.plotHandles = plotHandles;
-% --
 
-%% ShowAx8 - Tactile data - frames comparison
-% function [Data, handles] = ShowAx8(Data,handles)
-% % --
-% minX = Data.calculations.minX;
-% minY = Data.calculations.minY;
-% maxX = Data.calculations.maxX;
-% maxY = Data.calculations.maxY;
-% X = Data.calculations.X;
-% Y = Data.calculations.Y;
-% x = Data.calculations.x;
-% y = Data.calculations.y;
-% panelPosHdl = Data.plotHandles.panelPosHdl;
-% panelPos = Data.plotHandles.panelPos;
-% % --
-% set(handles.ax8,...
-%     'XLim',[minX-3*Data.TactileSensor.ASFfile.COL_SPACING   maxX+1*Data.TactileSensor.ASFfile.COL_SPACING],...
-%     'YLim',[minY-3*Data.TactileSensor.ASFfile.ROW_SPACING   maxY+1*Data.TactileSensor.ASFfile.ROW_SPACING] )
-% axes( handles.ax8 ); %#ok<*MAXES>
-% hold(handles.ax8,'on'); axis equal
-% % --
-% 
-% % --
-% if ~handles.options.isFirstLoad
-%     % if not first load of the session, do not recreate plot objects on top 
-%     % of existing ones - erase old ones first
-%     delete(handles.currentData.plotHandles.hSurfCmp)
-%     delete(handles.currentData.plotHandles.hCbar2)
-% %     delete(handles.currentData.plotHandles.hCbarTitle2)
-% end
-% % --
-% 
-% % --
-% hSurfCmp = surf(handles.ax8, X,Y,zeros(numel(y),numel(x)) );
-% set(hSurfCmp,'Tag','hSurfCmp');
-% view(2); shading interp;
-% % --
-% for j=1:10:numel(x), plot( [x(j) x(j)],[min(y) max(y)] ,':','Color',[0.8 0.8 0.8] ); end
-% for j=1:5:numel(y), plot( [min(x) max(x)],[y(j) y(j)] ,':','Color',[0.8 0.8 0.8] ); end
-% plot( [minX maxX maxX minX minX],[minY minY maxY maxY minY] ,'-k' );
-% % --
-% panelPosHdl(end+1,1) = plot( [x(panelPos(1)-1) x(panelPos(1)-1)],[min(y) max(y)] ,'--','Color',[0.6 0.6 0.6],'LineWidth',1,'Visible','off','Tag','panelPosHdl' );
-% panelPosHdl(end+1,1) = plot( [x(panelPos(2)+1) x(panelPos(2)+1)],[min(y) max(y)] ,'--','Color',[0.6 0.6 0.6],'LineWidth',1,'Visible','off','Tag','panelPosHdl' );
-% if numel(panelPos)<3
-%     set(panelPosHdl,'Visible','on');
-% else
-%     panelPosHdl(end+1,1) = plot( [x(panelPos(3)+1) x(panelPos(3)+1)],[min(y) max(y)] ,'--','Color',[0.6 0.6 0.6],'LineWidth',1,'Visible','off','Tag','panelPosHdl' );
-% end
-% % --
-% xlabel( ['Horizontal Distance (',Data.TactileSensor.ASFfile.COL_SPACING_units,')'] )
-% ylabel( ['Vertical Distance (',Data.TactileSensor.ASFfile.ROW_SPACING_units,')'] )
-% title('Difference between current frame and previous frame (current-previous)')
-% % --
-% ColorMap = GetColorMap(2);
-% colormap(handles.ax8,ColorMap)
-% colorbar;
-% caxis(handles.ax8, [ -5  5 ] )
-% % hCbar2 = cbfreeze(handles.ax8); % freeze colorbar
-% hCbar2=handles.ax8;
-% set(hCbar2,'YTick',[-5:2.5:5],'YTickLabelMode','auto');
-% % hCbarTitle2 = title(hCbar2,['\DeltaP (',Data.TactileSensor.ASFfile.UNITS,')']);
-% hCbarTitle2 = cblabel(['\DeltaP (',Data.TactileSensor.ASFfile.UNITS,')'],'Rotation',0,'units','normalized','Position',[0.5 1.08 0]);
-% % -- freeze colormap
-% freezeColors(handles.ax8); % freeze colormap
-% % --
-% hold(handles.ax8,'off');
-% % -- KEEP all in Data
-% plotHandles = Data.plotHandles;
-% % --
-% plotHandles.hSurfCmp = hSurfCmp;
-% plotHandles.panelPosHdl = panelPosHdl;
-% plotHandles.hCbar2 = hCbar2;
-% plotHandles.hCbarTitle2 = hCbarTitle2;
-% plotHandles.panelPos = panelPos;
-% % --
-% Data.plotHandles = plotHandles;
-% --
-
-%% ShowAx9 - zoom utility
-% function [Data, handles, info] = ShowAx9(Data,handles)
-% % --
-% plotSmoothFlag = get(handles.useSmoothData,'Value');
-% timeVec = Data.calculations.timeVec;
-% TactileCalculatedForce = Data.calculations.TactileCalculatedForce;
-% TactileCalculatedForce_smooth = Data.calculations.TactileCalculatedForce_smooth;
-% TotalAreaAllPanels = Data.calculations.TotalAreaAllPanels;
-% % --
-% if ~handles.options.isFirstLoad
-%     % if not first load of the session, do not recreate plot objects on top 
-%     % of existing ones - erase old ones first
-%     children = get(handles.ax9,'Children');
-%     for i=1:numel(children), if strcmpi(get(children(i),'Type'),'line'), delete(children(i)); end; end
-% end
-% % --
-% % --
-% if plotSmoothFlag, finalData = TactileCalculatedForce_smooth; else finalData = TactileCalculatedForce; end
-% handles.Hist = uiHistory_mod(handles.MainFig,{timeVec,finalData,TotalAreaAllPanels},true,handles.ax9); % uiHistory control
-% % -- Customize the uiHistory control
-% set(handles.Hist,'AreaEdgeColor'   ,[.3 .3 .3])
-% set(handles.Hist,'BackgroundColor' ,[1 1 1])
-% set(handles.Hist,'AxisColor'       ,[.3 .3 .3])
-% set(handles.Hist,'XisDate'         ,false)
-% set(handles.Hist,'CursorColor'     ,[0.129411764705882  0.4  0.674509803921569])
-% set(handles.Hist,'SelAreaEdgeColor',[0.129411764705882  0.4  0.674509803921569])
-% % -- Connect edit boxes content to uiHistory control
-% handles.Hist.addlistener('onStartDrag',@demo_event_onStartDrag);
-% handles.Hist.addlistener('onDrag'     ,@demo_event_onDrag);
-% handles.Hist.addlistener('onReleased' ,@demo_event_onReleased);
-% % -- Customize the handles.ax9
-% set(handles.ax9,'YLim',get(handles.ax2,'YLim'),'XLim',get(handles.ax2,'XLim'));
-% xlabel(handles.ax9,'Time (sec.)');
-% ylabel(handles.ax9,'Total Force (kN)');
-% % -- Force the execution of events
-% tempString = get(handles.currentFile,'String');
-% info = getTimeSeriesInfo( tempString(15:end) );
-% if ~(ischar(info.LimInd) && strcmpi(info.LimInd,'none')) && ~isempty(info.LimInd)
-%     handles.Hist.Cmin = timeVec(info.LimInd(1));
-%     handles.Hist.Cmax = timeVec(info.LimInd(2));
-%     set( handles.iEdit,'String',num2str(info.LimInd(1)) )
-% else
-%     handles.Hist.Cmin = timeVec(3);
-%     handles.Hist.Cmax = timeVec(end-2);
-% end
-% --
-
-%%
-function demo_event_onStartDrag(eventSrc,eventData)  %#ok<INUSD>
-% EdStart = findobj('Tag','EdStart');
-% EdEnd   = findobj('Tag','EdEnd');
-% set(EdStart,'backgroundcolor',[.8 .9 .8]);
-% set(EdEnd  ,'backgroundcolor',[.8 .9 .8]);
-
-%%
-function demo_event_onDrag(eventSrc,eventData) %#ok<INUSL>
-update_display(eventData.Positions,eventSrc.data,eventSrc.TotalArea);
-
-%%
-function demo_event_onReleased(eventSrc,eventData) %#ok<INUSL>
-update_display(eventData.Positions,eventSrc.data,eventSrc.TotalArea);
-% EdStart = findobj('Tag','EdStart');
-% EdEnd   = findobj('Tag','EdEnd');
-% set(EdStart,'backgroundcolor',[1 1 1]);
-% set(EdEnd  ,'backgroundcolor',[1 1 1]);
-
-%%
 function update_display(cursorPositions,data,TotalAreaAllPanels)
 xData = data{1};
 % -- find graphic objects
@@ -861,83 +636,6 @@ set(hL5zoom,'XData',hL5UserData{1}(I1:I2),'YData',hL5UserData{2}(I1:I2))
 set(hL6zoom,'XData',hL6UserData{1}(I1:I2),'YData',hL6UserData{2}(I1:I2))
 % --
 
-%% ShowAx10 - processed image
-% function [Data, handles] = ShowAx10(Data,handles,Contour,Peaks)
-% % --
-% minX = Data.calculations.minX;
-% minY = Data.calculations.minY;
-% maxX = Data.calculations.maxX;
-% maxY = Data.calculations.maxY;
-% X = Data.calculations.X;
-% Y = Data.calculations.Y;
-% x = Data.calculations.x;
-% y = Data.calculations.y;
-% panelPosHdl = Data.plotHandles.panelPosHdl;
-% panelPos = Data.plotHandles.panelPos;
-% % --
-% set(handles.ax10,...
-%     'XLim',[-16.638  916.131],...
-%     'YLim',[-24.2689 247.842] )
-% axes( handles.ax10 ); %#ok<*MAXES>
-% hold(handles.ax10,'on');
-% axis equal
-% % --
-% siblings = get(handles.ax10,'Children'); % Get all children of the object's
-% for i=1:numel(siblings), if ~ismember(get(siblings(i),'Tag'),{'hCbar10','hCbarTitle10'}), try delete(siblings(i)); end; end; end
-% % --
-% hSurf10 = surf( X,Y,get(Data.plotHandles.hSurf,'ZData') );
-% set(hSurf10,'Tag','hSurf10');
-% view(2); shading interp;
-% % --
-% ColorMap = colormap(handles.ax1);
-% colormap(handles.ax10,ColorMap)
-% if handles.options.isFirstLoad
-%     colorbar;
-% end
-% caxis( handles.ax10, caxis(handles.ax1) )
-% if handles.options.isFirstLoad
-% %     hCbar10 = cbfreeze(handles.ax10); % freeze colorbar
-%     hCbar10=handles.ax10;
-%     set(hCbar10,'Tag','hCbar10');
-%     hCbarTitle10 = cblabel(['Local Pressure (',Data.TactileSensor.ASFfile.UNITS,')'],'Rotation',0,'units','normalized','Position',[-0.5 1.1 0]);
-%     set(hCbarTitle10,'Tag','hCbarTitle10')
-% end
-% % --
-% for j=1:10:numel(x), plot( [x(j) x(j)],[min(y) max(y)] ,':','Color',[0.8 0.8 0.8],'Tag','myGrid' ); end
-% for j=1:5:numel(y), plot( [min(x) max(x)],[y(j) y(j)] ,':','Color',[0.8 0.8 0.8],'Tag','myGrid' ); end
-% plot( [minX maxX maxX minX minX],[minY minY maxY maxY minY] ,'-k','Tag','theBox' );
-% % --
-% panelPosHdl(3,1) = plot( [x(panelPos(1)-1) x(panelPos(1)-1)],[min(y) max(y)] ,'--','Color',[0.6 0.6 0.6],'LineWidth',1,'Visible','off','Tag','panelPosHdl' );
-% panelPosHdl(4,1) = plot( [x(panelPos(2)+1) x(panelPos(2)+1)],[min(y) max(y)] ,'--','Color',[0.6 0.6 0.6],'LineWidth',1,'Visible','off','Tag','panelPosHdl' );
-% panelPosHdl(5,1) = plot( [x(panelPos(3)+1) x(panelPos(3)+1)],[min(y) max(y)] ,'--','Color',[0.6 0.6 0.6],'LineWidth',1,'Visible','off','Tag','panelPosHdl' );
-% % --
-% xlabel( ['Horizontal Distance (',Data.TactileSensor.ASFfile.COL_SPACING_units,')'] )
-% ylabel( ['Vertical Distance (',Data.TactileSensor.ASFfile.ROW_SPACING_units,')'] )
-% % -- freeze colormap
-% if handles.options.isFirstLoad
-%     freezeColors(handles.ax10); % freeze colormap
-% end
-% % --
-% % hPlot3_ax10 = plot3(handles.ax10,Peaks(:,1),Peaks(:,2),Peaks(:,3),'.','Color',[0.3 0.3 0.3],'Tag','hPlot3_ax10');
-% hPlot3_ax10 = [];
-% hdl_contour_ax10 = plot3(handles.ax10,Contour(:,1),Contour(:,2),Contour(:,3),'-','Color',[0.95 0.95 0.95],'LineWidth',2,'Tag','hdl_contour_ax10');
-% % --
-% hold(handles.ax10,'off');
-% % -- KEEP all in Data
-% plotHandles = Data.plotHandles;
-% % --
-% plotHandles.panelPos = panelPos;
-% plotHandles.hSurf10 = hSurf10;
-% if handles.options.isFirstLoad
-%     plotHandles.hCbar10 = hCbar10;
-%     plotHandles.hCbarTitle10 = hCbarTitle10;
-% end
-% plotHandles.panelPosHdl = panelPosHdl;
-% plotHandles.hPlot3_ax10 = hPlot3_ax10;
-% plotHandles.hdl_contour_ax10 = hdl_contour_ax10;
-% % --
-% Data.plotHandles = plotHandles;
-% --
 
 %% GetRolling - Start showing in loop
 function GetRolling(hObject, eventdata, handles)
@@ -1055,34 +753,10 @@ handles.options.isDoOneFrame = isDoOneFrame;
 guidata(hObject,handles);
 % -- turn objects enabling on
 SetObjOnOff(handles,'on')
-% --
+% -- End of GetRolling
 
-%% 
-function SetObjOnOff(handles,action,listOfHdlsIn)
-% --
-if nargin==2
-    listOfHdls = {'ListFolders','Load','useSmoothData','avgWindowSize',...
-                  'goDnButton','goUpButton','iEdit','saveHPZstats','saveAllOpt',...
-                  'saveRangeOpt','EnableAx10',...
-                  'text51','text52','text53','text54','text55','text57','mult_std_peaks','minValue_peaks','mult_std_limits',...
-                  'text58','edit19','text59','varyingThreshold','constantThreshold'};
-elseif nargin==3 && ~iscell(listOfHdlsIn) && strcmpi(listOfHdlsIn,'initial/load')
-    listOfHdls = {'sensor1Check','sensor2Check','sensor3Check','sensor4Check',...
-                  'forceOnlyCheck','joiaTimeTraceCheck','speedEdit','stopButton',...
-                  'goDnButton','goUpButton','iEdit','saveHPZstats','saveAllOpt',...
-                  'saveRangeOpt','EnableAx10',...
-                  'text51','text52','text53','text54','text55','text57','mult_std_peaks','minValue_peaks','mult_std_limits',...
-                  'text58','edit19','text59','varyingThreshold','constantThreshold'};
-elseif nargin==3 && iscell(listOfHdlsIn)
-    listOfHdls = listOfHdlsIn;
-else
-    return;
-end
-for i=1:numel(listOfHdls), set(handles.(listOfHdls{i}),'Enable',action); end
-% --
-JOIAtool_mine('saveType_SelectionChangeFcn',handles.MainFig, [], handles)
 
-%%
+%% A custom colormap was used for showing the tactile data on Ax1
 function ColorMap = GetColorMap(ind)
 % --
 if ind==1
@@ -1119,7 +793,7 @@ end
 tempIND = (inputColorMap(:,1)-1)/(inputColorMap(end,1)-1);
 ColorMap = [interp1(tempIND,inputColorMap(:,2),fullIND)'   interp1(tempIND,inputColorMap(:,3),fullIND)'   interp1(tempIND,inputColorMap(:,4),fullIND)'];
 ColorMap = ColorMap/max(ColorMap(:));
-% --
+% -- End of colormap
 
 %% --- Executes during object creation, after setting all properties.
 function speedStatic_CreateFcn(hObject, eventdata, handles)
@@ -1153,7 +827,7 @@ guidata(hObject,handles);
 if ~getappdata(handles.MainFig,'isStoppedFlag')
 	GetRolling(hObject, eventdata, handles)
 end
-% --
+% -- End of stopButton callback function
 
 %% --- Executes on button press in goDnButton.
 function goDnButton_Callback(hObject, eventdata, handles)
@@ -1164,7 +838,7 @@ handles.options.isDoOneFrame = true;
 guidata(hObject,handles);
 % --
 GetRolling(hObject, eventdata, handles)
-% --
+% -- End of goDnButton
 
 %% --- Executes on button press in goUpButton.
 function goUpButton_Callback(hObject, eventdata, handles)
@@ -1175,7 +849,7 @@ handles.options.isDoOneFrame = true;
 guidata(hObject,handles);
 % --
 GetRolling(hObject, eventdata, handles)
-% --
+% -- End of goUpButton
 
 %% --- Executes on button press in joiaTimeTraceCheck.
 function joiaTimeTraceCheck_Callback(hObject, eventdata, handles)
@@ -1211,7 +885,7 @@ function sensor4Check_Callback(hObject, eventdata, handles)
 setVisSensors(hObject, eventdata, handles, 4, 'sensor4Check')
 % --
 
-%% setVisSensors
+%% Executes on checkbox select show load of Sensor#. Plots sensor force data in addition to the force data in Ax2
 function setVisSensors(hObject, eventdata, handles, SensorNum, SensorName)
 % -- retrieve data
 h1 = handles.currentData.plotHandles.hLsensor(SensorNum,1);
@@ -1236,7 +910,7 @@ set(handles.currentData.plotHandles.panelPosHdl,'Visible',vis);
 % -- set back data
 handles.currentData.plotHandles.hLsensor(SensorNum,:) = [h1 h2 h3];
 guidata(hObject,handles);
-% --
+% -- End of setVisSensors
 
 %% --- Executes on button press in forceOnlyCheck.
 function forceOnlyCheck_Callback(hObject, eventdata, handles)
@@ -1283,6 +957,7 @@ else
     sameLeft    = handles.currentData.plotHandles.origPosAx2(1);
     set(handles.ax2,'Position', [sameLeft  ax4Bot  sameWidth  newHeight],'XTickLabel',get(handles.ax4,'XTickLabel'));
 end;
+% -- End of forceOnlyCheck_Callback
 
 %% --- Executes on button press in useSmoothData.
 function useSmoothData_Callback(hObject, eventdata, handles)
@@ -1316,10 +991,7 @@ end
 
 %%
 function saveHPZstats_Callback(hObject, eventdata, handles)
-% -- turn objects enabling off while rolling
-% % SetObjOnOff(handles,'off')
-% % SetObjOnOff(handles,'off',{'stopButton'})
-% -- retrieve important data
+
 Data            = handles.currentData;
 DeltaTime       = Data.TactileSensor.ASFfile.SECONDS_PER_FRAME;
 X               = Data.calculations.X;
@@ -1420,7 +1092,7 @@ save( currentName,'calculatedData','individualHPZs_data' );
 % -- turn objects enabling on
 SetObjOnOff(handles,'on')
 SetObjOnOff(handles,'on',{'stopButton'})
-% --
+% -- End of SaveHPZ
 
 
 %% --- Executes when selected object is changed in saveHPZopts.
@@ -1428,34 +1100,7 @@ function saveHPZopts_SelectionChangeFcn(hObject, eventdata, handles)
 % --
 
 
-%% --- Executes on button press in EnableAx10.
-function EnableAx10_Callback(hObject, eventdata, handles)
-% --
-DoAx10Flag = get(handles.EnableAx10,'Value');
-% --
-try delete( findobj(handles.MainFig,'Tag','hText') ); end
-if ~DoAx10Flag
-    % erase existing stuff on ax10 if not used
-    try delete( findobj(handles.MainFig,'Tag','hSurf10') ); end
-    try delete( findobj(handles.MainFig,'Tag','hPlot3_ax10') ); end
-    try delete( findobj(handles.MainFig,'Tag','hdl_contour_ax10') ); end
-        xlim = get(handles.ax10,'XLim');  ylim = get(handles.ax10,'YLim');
-    text( mean(xlim),mean(ylim),'\bfNOTE:\rm OPTION TO SHOW HPZs CONTOURS AND PEAKS NOT ENABLED' ,...
-          'Parent',handles.ax10,'HorizontalAlignment','center','FontWeight','bold','Tag','hText' );
-else
-    Data = handles.currentData;
-    currentData = get(handles.currentData.plotHandles.hSurf,'ZData');
-    foundHPZs_data = findHPZs( Data.calculations.X,Data.calculations.Y,currentData,handles );
-    peaks    	= foundHPZs_data.peaks;
-    c_contour 	= foundHPZs_data.c_contour;
-    ZLIM = get( handles.ax10 , 'ZLim' );
-    peaks(:,3) = ZLIM(2)*10;
-    c_contour(:,3) = ZLIM(2)*10;
-    axes(handles.ax10)
-    [~,~] = ShowAx10(Data,handles,c_contour,peaks);
-end
-
-%%
+%% Defaults Callback functions for MATLAB
 function mult_std_peaks_Callback(hObject, eventdata, handles)
 EnableAx10_Callback(hObject, eventdata, handles)
 % --
@@ -1472,32 +1117,6 @@ EnableAx10_Callback(hObject, eventdata, handles)
 
 function edit19_Callback(hObject, eventdata, handles)
 EnableAx10_Callback(hObject, eventdata, handles)
-% --
+% -- End of defalut callback functions
 
-%%
-function saveType_SelectionChangeFcn(hObject, eventdata, handles)
-if get(handles.saveType,'SelectedObject')==handles.varyingThreshold
-    OnOff1 = 'on';
-else
-    OnOff1 = 'off';
-end
-if get(handles.saveType,'SelectedObject')==handles.constantThreshold
-    OnOff2 = 'on';
-else
-    OnOff2 = 'off';
-end
 
-set(handles.text51,'enable',OnOff1)
-set(handles.mult_std_peaks,'enable',OnOff1)
-set(handles.text52,'enable',OnOff1)
-set(handles.text55,'enable',OnOff1)
-set(handles.minValue_peaks,'enable',OnOff1)
-set(handles.text57,'enable',OnOff1)
-set(handles.text53,'enable',OnOff1)
-set(handles.mult_std_limits,'enable',OnOff1)
-set(handles.text54,'enable',OnOff1)
-
-set(handles.text58,'enable',OnOff2)
-set(handles.edit19,'enable',OnOff2)
-set(handles.text59,'enable',OnOff2)
-% --
