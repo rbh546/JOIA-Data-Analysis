@@ -248,7 +248,7 @@ Data.calculations = calculations;
 % -- End of calculation
 
 %% ShowAx1 - Plots Tactile pressure sensor data on Ax1
-function [Data, handles] = ShowAx1(Data,handles)
+function [Data, handles] = show_Ax1(Data,handles)
 % --
 minX = Data.calculations.minX;
 minY = Data.calculations.minY;
@@ -339,7 +339,7 @@ Data.plotHandles = plotHandles;
 % -- End of function for Ax1
     
 %% ShowAx2 - Plots Forces on Ax2
-function [Data, handles] = ShowAx2(Data,handles)
+function [Data, handles] = show_Ax2(Data,handles)
 % --
 plotSmoothFlag = get(handles.useSmoothData,'Value');
 timeVec = Data.calculations.timeVec;
@@ -403,7 +403,7 @@ Data.plotHandles = plotHandles;
 % -- End of function for Ax2
 
 %% ShowAx3 - Plot Areas on Ax3
-function [Data, handles] = ShowAx3(Data,handles)
+function [Data, handles] = show_Ax3(Data,handles)
 % --
 plotSmoothFlag = get(handles.useSmoothData,'Value');
 timeVec = Data.calculations.timeVec;
@@ -470,7 +470,7 @@ Data.plotHandles = plotHandles;
 % -- End of function for Ax3
 
 %% ShowAx4 - Plots Pressures on Ax4
-function [Data, handles] = ShowAx4(Data,handles)
+function [Data, handles] = show_Ax4(Data,handles)
 % --
 plotSmoothFlag = get(handles.useSmoothData,'Value');
 timeVec = Data.calculations.timeVec;
